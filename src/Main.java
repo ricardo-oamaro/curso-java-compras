@@ -1,42 +1,44 @@
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner leitura = new Scanner(System.in);
+        System.out.println("Digite o limite do cartão: ");
+        double limite = leitura.nextDouble();
+        CartaoDeCredito cartao = new CartaoDeCredito(limite);
 
-        System.out.print("Insira o limite do cartão de crédito: R$ ");
-        double limite = scanner.nextDouble();
-        var cartao = new CartaoDeCredito(limite);
+        int sair = 1;
+        while (sair != 0) {
+            System.out.println("Digite a descrição da compra:");
+            String descricao = leitura.next();
 
-        while (true) {
-            System.out.print("Insira a descrição da compra (ou 'sair' para finalizar): ");
-            String descricao = scanner.next();
-            if (descricao.equals("sair")) {
-                break;
-            }
+            System.out.println("Digite o valor da compra:");
+            double valor = leitura.nextDouble();
 
-            System.out.print("Insira o valor da compra: R$ ");
-            double valor = scanner.nextDouble();
-            var compra = new Compra(descricao, valor);
-            boolean comprasLancadas = cartao.lancaCompras(compra);
+            Compra compra = new Compra(descricao, valor);
+            boolean compraRealizada = cartao.lancaCompras(compra);
 
-            if (comprasLancadas) {
-                System.out.println("Compra realizada com sucesso!");
-                System.out.println(compra);
-                System.out.print("Digite 0 para sair ou 1 para continuar comprando");
-                String sair = scanner.next();
-                if (sair.equals("0")) {
-                    break;
-                }
+            if (compraRealizada) {
+                System.out.println("Compra realizada!");
+                System.out.println("Digite 0 para sair ou 1 para continuar");
+                sair = leitura.nextInt();
             } else {
-                System.out.println("Compra não realizada: saldo insuficiente.");
-
+                System.out.println("Saldo insuficiente!");
+                sair = 0;
             }
+        }
 
-        }
-        System.out.printf("COMPRAS REALIZADAS:");
+        System.out.println("***********************");
+        System.out.println("COMPRAS REALIZADAS:\n");
+
+        Collections.sort(cartao.getCompras().reversed());
+
         for (Compra c : cartao.getCompras()) {
-            System.out.println(c);
+            System.out.println(c.getDescricao() + " - " + c.getValor());
         }
+        System.out.println("\n***********************");
+
+        System.out.println("\nSaldo do cartão: " + cartao.getSaldo());
     }
 }

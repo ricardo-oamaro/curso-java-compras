@@ -16,6 +16,7 @@ public class CartaoDeCredito {
     public boolean lancaCompras(Compra compra) {
         if(this.saldo >= compra.getValor()) {
             this.saldo -= compra.getValor();
+            compras.add(compra);
             return true;
         }
         return false;

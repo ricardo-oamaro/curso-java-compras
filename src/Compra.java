@@ -1,4 +1,4 @@
-public class Compra {
+public class Compra implements Comparable<Compra> {
 
     private String descricao;
     private double valor;
@@ -19,5 +19,10 @@ public class Compra {
     @Override
     public String toString() {
         return "\n descricao: " + descricao + " valor: " + valor;
+    }
+
+    @Override
+    public int compareTo(Compra o) {
+        return Double.compare(this.valor, o.valor);
     }
 }
